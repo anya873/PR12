@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Book_Shapovalova.Classes;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,9 +17,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Book_Shapovalova.Classes;
-using System.IO;
-using System.Text;
 
 namespace Book_Shapovalova
 {
@@ -93,16 +94,37 @@ namespace Book_Shapovalova
 
         private void btnSave(object sender, RoutedEventArgs e)
         {
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\books.txt";
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*";
+            dialog.FileName = "books.txt";
 
-            using (StreamWriter writer = new StreamWriter(path))
+            if (dialog.ShowDialog() == true)
             {
-                foreach (var book in AllBooks)
+                using (StreamWriter writer = new StreamWriter(dialog.FileName))
                 {
-                    writer.WriteLine(book.Name + " | " + book.Year + " | " + book.ToGenres() + " | " + book.ToAuthors());
+                    foreach (var book in AllBooks)
+                    {
+                        writer.WriteLine(book.Name + " | " + book.Year + " | " + book.ToGenres() + " | " + book.ToAuthors());
+                    }
                 }
+                MessageBox.Show("Файл успешно сохранен!");
             }
-            MessageBox.Show("Сохранено!");
         }
-    }
+
+        private void btnLoad(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*";
+
+            if (dialog.ShowDialog() == true)
+            {
+                string text = "";
+                foreach (string line in File.ReadAllLines(dialog.FileName))
+                {
+                    text += line + "\n";
+                }
+                MessageBox.Show("Загруженные данные:\n\n" + text);
+            }
+        }
+        }
 }
