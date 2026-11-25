@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Book_Shapovalova.Classes;
+using System.IO;
+using System.Text;
 
 namespace Book_Shapovalova
 {
@@ -87,6 +89,20 @@ namespace Book_Shapovalova
                 FindBook = FindBook.FindAll(x => x.Year == Convert.ToInt32(cbYear.SelectedItem.ToString()));
             }
             CreateUI(FindBook);
+        }
+
+        private void btnSave(object sender, RoutedEventArgs e)
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\books.txt";
+
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                foreach (var book in AllBooks)
+                {
+                    writer.WriteLine(book.Name + " | " + book.Year + " | " + book.ToGenres() + " | " + book.ToAuthors());
+                }
+            }
+            MessageBox.Show("Сохранено!");
         }
     }
 }

@@ -33,23 +33,28 @@ namespace Book_Shapovalova.Classes
         }
         public string ToGenres()
         {
+            if (this.Genres == null || this.Genres.Count == 0) return "Нет жанров";
+
             string toGenres = "";
-            for (int iGenre = 0; iGenre<this.Genres.Count; iGenre++)
+            for (int iGenre = 0; iGenre < this.Genres.Count; iGenre++)
             {
                 toGenres += this.Genres[iGenre].Name;
                 if (iGenre < this.Genres.Count - 1) toGenres += ", ";
-                return toGenres;
             }
+            return toGenres;
         }
+
         public string ToAuthors()
         {
+            if (this.Authors == null || this.Authors.Count == 0) return "Нет авторов";
+
             string toAuthors = "";
             for (int iAuthor = 0; iAuthor < this.Authors.Count; iAuthor++)
             {
-                toAuthors += this.Genres[iAuthor].Name;
+                toAuthors += this.Authors[iAuthor].FIO;
                 if (iAuthor < this.Authors.Count - 1) toAuthors += ", ";
-                return toAuthors;
             }
+            return toAuthors;
         }
     }
 }
